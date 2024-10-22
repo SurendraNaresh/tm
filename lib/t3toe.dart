@@ -72,24 +72,18 @@ class _TicTacToeHomePageState extends State<TicTacToeHomePage> {
     }
   }
 
-void printMove(int i, int j) {
-  // Part 1: Print the ith row and jth column move
-  print("Computer moved at row ${i + 1}, column ${j + 1}");
-
-  // Part 2 (Optional): Print bottom label message
-  String bottomLabel = "Move made at position: ($i, $j)";
-  print(bottomLabel); // You can modify this label as needed
-}
+void printMove(Point<int> point) {
+    // Print the move at the specific point (x, y)
+    print("Computer moved at row ${point.x + 1}, column ${point.y + 1}");
+  }
 
   void _makeComputerMove() {
-   Point move = Point(0,1);
-   setState(() {
-				   move = doComputedMove();
-	  
-	     printMove(move.x, move.y);
-    }) ;
-   
+    setState(() {
+      Point<int> move = doComputedMove();
+      printMove(move);
+    });
   }
+
 
   bool _isBoardFull() {
     for (int i = 0; i < 3; i++) {
@@ -105,10 +99,10 @@ void printMove(int i, int j) {
 
 Point<int>  doComputedMove() {
   // Try to place 'O' in center if available
-  if (_board[1][1] == ' ') {
-    _board[1][1] = 'O';
-    return Point(1,1);
-  }
+  // if (_board[1][1] == ' ') {
+  //  _board[1][1] = 'O';
+  //  return Point(1,1);
+  // }
 
   // Block the player if they have two 'X's in any row, column, or diagonal
   // Check rows
