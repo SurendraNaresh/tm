@@ -82,23 +82,13 @@ void printMove(int i, int j) {
 }
 
   void _makeComputerMove() {
-    List<Point<int>> Cells = [];
-    for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-        if (_board[i][j] == '') {
-          Cells.add(Point(i, j));
-        }
-      }
-    }
-    if (Cells.isNotEmpty) {
-      Point<int> move = Cells[Random().nextInt(Cells.length)];
-      _makeMove(move.x, move.y);
-	}
-	else {  
-	  Point<int> move = doComputedMove();
-	  _makeMove(move.x, move.y);
-	  printMove(move.x, move.y);
-    }
+   Point move = Point(0,1);
+   setState(() {
+				   move = doComputedMove();
+	  
+	     printMove(move.x, move.y);
+    }) ;
+   
   }
 
   bool _isBoardFull() {
