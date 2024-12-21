@@ -57,15 +57,98 @@ class _TicTacToeHomePageState extends State<TicTacToeHomePage> {
         } else {
           _currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
           if (_isSinglePlayer && _currentPlayer == 'O') {
-            _makeComputerMove();
+            return _makeComputerMove();
+			//printMove(move);
           }
         }
       });
     }
   }
 
+  void printMove(Point<int> point) {
+    // Print the move at the specific point (x, y)
+	setState(() {
+		_board[point.x][point.y] = _currentPlayer;
+	    print("Computer moved at row ${point.x + 1}, column ${point.y + 1}");
+		_currentPlayer = _currentPlayer == 'X' ? 'O' : 'X';
+		});
+	}
+
   void _makeComputerMove() {
     List<Point<int>> emptyCells = [];
+	Point <int> mv = Point(1,1);
+  // Block the player if they have two 'X's in any row, column, or diagonal
+	  // Check rows
+	  for (int i = 0; i < 3; i++) {
+		if (_board[i][0] == 'X' && _board[i][1] == 'X' && _board[i][2] == ' ') {
+			mv=Point(i, 2);
+			printMove(mv);
+			return ; // Block row
+		}
+		if (_board[i][1] == 'X' && _board[i][2] == 'X' && _board[i][0] == ' ') {
+			mv=Point(i, 0);
+			printMove(mv);
+			return ; // Block row
+		}
+		if (_board[i][0] == 'X' && _board[i][2] == 'X' && _board[i][1] == ' ') {
+		   mv=Point(i, 1);
+			 printMove(mv);
+  			 return ; // Block row
+		}
+	  }
+
+	  // Check columns
+	  for (int i = 0; i < 3; i++) {
+		if (_board[0][i] == 'X' && _board[1][i] == 'X' && _board[2][i] == ' ') {
+			mv=Point(2, i);
+			 printMove(mv);
+			return ; // Block column
+		}
+		if (_board[1][i] == 'X' && _board[2][i] == 'X' && _board[0][i] == ' ') {
+		  mv=Point(0, i);
+			 printMove(mv);
+			return ; // Block column
+		}
+		if (_board[0][i] == 'X' && _board[2][i] == 'X' && _board[1][i] == ' ') {
+			mv=Point(1, i);
+			 printMove(mv);
+			return ; // Block column
+		}
+	  }
+
+	  // Check diagonals
+	  if (_board[0][0] == 'X' && _board[1][1] == 'X' && _board[2][2] == ' ') {
+			mv=Point(2, 2);
+			 printMove(mv);
+			return ; // Block diagonal
+	  }
+	  if (_board[2][2] == 'X' && _board[1][1] == 'X' && _board[0][0] == ' ') {
+		   mv=Point(0, 0);
+			 printMove(mv);
+			return ; // Block diagonal
+	  }
+	  if (_board[0][2] == 'X' && _board[1][1] == 'X' && _board[2][0] == ' ') {
+		  mv=Point(2, 0);
+			 printMove(mv);
+			return ; // Block diagonal
+	  }
+	  if (_board[2][0] == 'X' && _board[1][1] == 'X' && _board[0][2] == ' ') {
+			mv=Point(0, 2);
+			printMove(mv);
+			return ; // Block diagonal
+	  }
+
+	  // If no blocking or winning move is possible, place 'O' in any empty spot
+	  for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+		  if (_board[i][j] == ' ') {
+			mv=Point(i, j);
+			 printMove(mv);
+     		 return ;
+		  }
+		}
+	  }
+	//=================
     for (int i = 0; i < 3; i++) {
       for (int j = 0; j < 3; j++) {
         if (_board[i][j] == '') {
@@ -73,10 +156,12 @@ class _TicTacToeHomePageState extends State<TicTacToeHomePage> {
         }
       }
     }
-    if (emptyCells.isNotEmpty) {
+    if (emptyCells.isNotEmpty && _currentPlayer != '0' ) {
       Point<int> move = emptyCells[Random().nextInt(emptyCells.length)];
-      _makeMove(move.x, move.y);
+	  printMove(move);
     }
+	_currentPlayer = 'X' ; // default to Player 1
+	return ; // Fallback if no move was found (change as per your logic)
   }
 
   bool _isBoardFull() {
